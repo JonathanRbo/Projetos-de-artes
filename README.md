@@ -4,7 +4,7 @@ Portfolio pessoal de design gráfico com interface inspirada no Photoshop/Figma.
 
 ## Sobre
 
-Página single-page que exibe amostras de trabalhos de design gráfico (artes para redes sociais, branding, peças publicitárias) através de embeds diretos do Instagram. O layout simula ferramentas de design com topbar, painéis laterais e galeria central.
+Página single-page que exibe amostras de trabalhos de design gráfico (artes para redes sociais, branding, peças publicitárias) através de embeds diretos do Instagram. O layout simula ferramentas de design com topbar e galeria central.
 
 ## Tecnologias
 
@@ -34,9 +34,9 @@ portfolio-artes/
 
 Faz parte de um conjunto de 3 portfolios interligados:
 
-- [Portfolio Principal](../portfolio/) — visão geral
+- [Portfolio Principal](https://jonathanrbo.github.io/portfolio/) — visão geral
 - **Portfolio de Artes** ← você está aqui
-- [Portfolio de Vídeos](../portfolio-videos/) — edição de vídeo
+- [Portfolio de Vídeos](https://jonathanrbo.github.io/Projetos-de-videos/) — edição de vídeo
 
 ## Autor
 
