@@ -80,17 +80,21 @@
             padding: 8px 12px;
             cursor: pointer;
             transition: color 0.25s;
-            font-size: 12px;
+            font-size: 14px;
             border-radius: var(--radius-sm);
         }
         .menu-items span:hover { color: var(--text-primary); }
         .app-logo {
             font-family: 'Inter', sans-serif;
-            font-size: 14px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: -0.5px;
+            color: var(--text-primary);
         }
-        .app-logo .logo-accent { color: var(--accent); }
+        .app-logo .logo-accent {
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(108, 159, 255, 0.5);
+        }
         .file-name {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
@@ -416,12 +420,9 @@
     <!-- ===== TOP BAR ===== -->
     <header class="app-topbar">
         <div class="container">
-            <div class="d-flex f-items-center f-justify-between p-10-tb">
+            <div class="d-flex f-items-center f-justify-between p-15-tb">
                 <div class="d-flex f-items-center f-gap-15">
                     <a href="https://jonathanrbo.github.io/portfolio/" style="text-decoration: none;"><span class="app-logo"><span class="logo-accent">JR</span> Design</span></a>
-                    <div class="menu-items d-flex xs-d-none">
-                        <span style="color: var(--accent); border-bottom: 1px solid var(--accent);">Artes</span>
-                    </div>
                 </div>
                 <span class="file-name xs-d-none">portfolio_artes.psd</span>
             </div>
