@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JR Design - Arte Digital Portfolio</title>
+    <link rel="stylesheet" href="https://cdn.squeleton.dev/squeleton.v4.min.css">
+    <script src="https://cdn.squeleton.dev/squeleton-main.v4.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #131316;
+            --bg-surface: #1b1b20;
+            --bg-elevated: #222228;
+            --accent: #6c9fff;
+            --accent-glow: rgba(108, 159, 255, 0.2);
+            --accent-pink: #f472b6;
+            --accent-orange: #fb923c;
+            --accent-purple: #a78bfa;
+            --accent-green: #4ade80;
+            --accent-yellow: #facc15;
+            --text-primary: #eaeaed;
+            --text-secondary: #9494a3;
+            --text-muted: #5e5e6e;
+            --border-color: rgba(255,255,255,0.06);
+            --border-subtle: rgba(255,255,255,0.03);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ===== SUBTLE GRAIN TEXTURE ===== */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            opacity: 0.015;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ===== TOP BAR ===== */
+        .app-topbar {
+            background: rgba(19, 19, 22, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .menu-items span {
+            color: var(--text-muted);
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: color 0.25s;
+            font-size: 12px;
+            border-radius: var(--radius-sm);
+        }
+        .menu-items span:hover { color: var(--text-primary); }
+        .app-logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .app-logo .logo-accent { color: var(--accent); }
+        .file-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-elevated);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        /* ===== HERO ===== */
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            pointer-events: none;
+        }
+        .glow-1 { background: var(--accent); top: -200px; right: -100px; }
+        .glow-2 { background: var(--accent-pink); bottom: -200px; left: -100px; }
+
+        .hero-canvas {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 60px 50px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 0 0 1px var(--border-subtle), 0 20px 60px rgba(0,0,0,0.3);
+        }
+        /* Checkerboard subtle */
+        .hero-canvas::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(45deg, rgba(255,255,255,0.01) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(255,255,255,0.01) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.01) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.01) 75%);
+            background-size: 24px 24px;
+            background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+            pointer-events: none;
+        }
+        .hero-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .hero-title {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 800;
+            line-height: 1.0;
+            letter-spacing: -2px;
+            color: var(--text-primary);
+        }
+        .hero-title .t-accent { color: var(--accent); }
+        .hero-title .t-pink { color: var(--accent-pink); }
+        .hero-sub {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 400px;
+        }
+        /* Corner handles */
+        .corner-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            border: 2px solid var(--accent);
+            background: var(--bg-surface);
+            opacity: 0.4;
+        }
+        .ch-tl { top: 12px; left: 12px; }
+        .ch-tr { top: 12px; right: 12px; }
+        .ch-bl { bottom: 12px; left: 12px; }
+        .ch-br { bottom: 12px; right: 12px; }
+
+        /* Tool chips */
+        .tool-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .tool-chip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== SIDEBAR PANELS (desktop) ===== */
+        .side-panels {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .s-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .s-panel-head {
+            padding: 10px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .s-panel-body { padding: 12px 14px; }
+
+        /* Color swatches */
+        .swatch-row {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .swatch {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .swatch:hover { transform: scale(1.25); box-shadow: 0 0 12px rgba(255,255,255,0.15); }
+
+        /* Layer rows */
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 7px 10px;
+            gap: 10px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 3px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .layer-item:hover { background: rgba(255,255,255,0.03); }
+        .layer-item.active { background: rgba(108, 159, 255, 0.08); }
+        .layer-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+        .layer-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+        .layer-vis { font-size: 12px; color: var(--text-muted); }
+
+        /* Info rows */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+        }
+        .info-key { color: var(--text-muted); }
+        .info-val { color: var(--accent); }
+
+        /* ===== SECTION HEADING ===== */
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .section-label::before { content: '/* '; color: #4a6; }
+        .section-label::after { content: ' */'; color: #4a6; }
+
+        /* ===== INSTAGRAM EMBEDS ===== */
+        .insta-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .insta-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(108, 159, 255, 0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25), 0 0 0 1px rgba(108, 159, 255, 0.1);
+        }
+        .insta-card iframe {
+            display: block;
+            border: none;
+            width: 100%;
+            min-height: 480px;
+            background: var(--bg-surface);
+        }
+        .insta-label {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .insta-label-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+        .insta-label-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+        }
+
+        /* ===== GLOW DIVIDER ===== */
+        .glow-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), var(--accent-pink), transparent);
+            opacity: 0.15;
+        }
+
+        /* ===== CTA ===== */
+        .cta-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 0 1px var(--border-subtle), 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(108, 159, 255, 0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .cta-btn-primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+        .cta-btn-primary:hover {
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        .cta-btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .cta-btn-secondary:hover {
+            border-color: rgba(255,255,255,0.12);
+            transform: translateY(-2px);
+        }
+
+        /* ===== FOOTER ===== */
+        .app-footer {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            display: inline-block;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 991px) {
+            .desktop-only { display: none !important; }
+            .hero-canvas { padding: 40px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP BAR ===== -->
+    <header class="app-topbar">
+        <div class="container">
+            <div class="d-flex f-items-center f-justify-between p-10-tb">
+                <div class="d-flex f-items-center f-gap-15">
+                    <a href="../portfolio/" style="text-decoration: none;"><span class="app-logo"><span class="logo-accent">JR</span> Design</span></a>
+                    <div class="menu-items d-flex xs-d-none">
+                        <a href="../portfolio/" style="text-decoration: none;"><span>Portfolio</span></a>
+                        <span style="color: var(--accent); border-bottom: 1px solid var(--accent);">Artes</span>
+                        <a href="../portfolio-videos/" style="text-decoration: none;"><span>Videos</span></a>
+                    </div>
+                </div>
+                <span class="file-name xs-d-none">portfolio_artes.psd</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ===== HERO ===== -->
+        <section class="hero-section p-60-tb xs-p-30-tb">
+            <div class="hero-bg-glow glow-1"></div>
+            <div class="hero-bg-glow glow-2"></div>
+            <div class="container">
+                <div class="row gap-25">
+
+                    <!-- Canvas -->
+                    <div class="c-xs-12 c-md-8">
+                        <div class="hero-canvas wow fadeIn">
+                            <div class="corner-handle ch-tl"></div>
+                            <div class="corner-handle ch-tr"></div>
+                            <div class="corner-handle ch-bl"></div>
+                            <div class="corner-handle ch-br"></div>
+
+                            <div class="ps-relative" style="z-index: 1;">
+                                <p class="hero-tag m-15-b wow fadeInUp" data-wow-delay="0.2s">portfolio</p>
+                                <h1 class="hero-title m-20-b wow fadeInUp" data-wow-delay="0.3s">
+                                    Minhas<br>
+                                    <span class="t-accent">Artes</span> <span class="t-pink">Digitais</span>
+                                </h1>
+                                <p class="hero-sub m-25-b wow fadeInUp" data-wow-delay="0.4s">
+                                    Uma coleção do meu trabalho criativo. Photoshop, CorelDRAW, Illustrator e mais.
+                                </p>
+                                <div class="tool-chips wow fadeInUp" data-wow-delay="0.5s">
+                                    <span class="tool-chip">Photoshop</span>
+                                    <span class="tool-chip">Illustrator</span>
+                                    <span class="tool-chip">CorelDRAW</span>
+                                    <span class="tool-chip">Figma</span>
+                                    <span class="tool-chip">Canva</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Side Panels -->
+                    <div class="c-xs-12 c-md-4 desktop-only">
+                        <div class="side-panels wow fadeInRight">
+
+                            <!-- Color -->
+                            <div class="s-panel">
+                                <div class="s-panel-head">
+                                    <span>Colors</span>
+                                    <span style="color: var(--accent);">#6C9FFF</span>
+                                </div>
+                                <div class="s-panel-body">
+                                    <div style="height: 50px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent-pink)); margin-bottom: 10px; position: relative;">
+                                        <div style="width: 10px; height: 10px; border: 2px solid #fff; border-radius: 50%; position: absolute; right: 20px; top: 12px; box-shadow: 0 0 6px rgba(0,0,0,0.3);"></div>
+                                    </div>
+                                    <div class="swatch-row">
+                                        <div class="swatch" style="background: #6c9fff;"></div>
+                                        <div class="swatch" style="background: #f472b6;"></div>
+                                        <div class="swatch" style="background: #fb923c;"></div>
+                                        <div class="swatch" style="background: #facc15;"></div>
+                                        <div class="swatch" style="background: #4ade80;"></div>
+                                        <div class="swatch" style="background: #a78bfa;"></div>
+                                        <div class="swatch" style="background: #22d3ee;"></div>
+                                        <div class="swatch" style="background: #fff;"></div>
+                                        <div class="swatch" style="background: #71717a;"></div>
+                                        <div class="swatch" style="background: #18181b;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Layers -->
+                            <div class="s-panel">
+                                <div class="s-panel-head">
+                                    <span>Layers</span>
+                                    <span>4</span>
+                                </div>
+                                <div class="p-5-all">
+                                    <div class="layer-item active">
+                                        <div class="layer-preview" style="background: linear-gradient(135deg, var(--accent), var(--accent-pink));"></div>
+                                        <span class="layer-label">Titulo</span>
+                                        <span class="layer-vis"><span class="iccon-eye-1"></span></span>
+                                    </div>
+                                    <div class="layer-item">
+                                        <div class="layer-preview" style="background: var(--bg-elevated);"></div>
+                                        <span class="layer-label">Subtitulo</span>
+                                        <span class="layer-vis"><span class="iccon-eye-1"></span></span>
+                                    </div>
+                                    <div class="layer-item">
+                                        <div class="layer-preview" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                                        <span class="layer-label">Formas</span>
+                                        <span class="layer-vis"><span class="iccon-eye-1"></span></span>
+                                    </div>
+                                    <div class="layer-item">
+                                        <div class="layer-preview" style="background: #fff;"></div>
+                                        <span class="layer-label">Background</span>
+                                        <span class="layer-vis"><span class="iccon-eye-1"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Info -->
+                            <div class="s-panel">
+                                <div class="s-panel-head">
+                                    <span>Info</span>
+                                </div>
+                                <div class="s-panel-body">
+                                    <div class="info-row"><span class="info-key">Artist</span><span class="info-val">Jonathan R.</span></div>
+                                    <div class="info-row"><span class="info-key">Tools</span><span style="color: var(--accent-pink);">PS / AI / CDR</span></div>
+                                    <div class="info-row"><span class="info-key">Projects</span><span style="color: var(--accent-orange);">10+</span></div>
+                                    <div class="info-row"><span class="info-key">Status</span><span style="color: var(--accent-green);"><span class="status-dot"></span> Criando</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DIVIDER ===== -->
+        <div class="glow-line"></div>
+
+        <!-- ===== GALLERY ===== -->
+        <section class="p-60-tb xs-p-30-tb" id="gallery">
+            <div class="container">
+
+                <div class="text-center m-50-b">
+                    <p class="section-label m-10-b wow fadeInUp">artboards</p>
+                    <h2 class="fs-14 xs-fs-12 fw-700 wow fadeInUp" data-wow-delay="0.1s">Galeria</h2>
+                    <p class="fs-8 m-15-t wow fadeInUp" data-wow-delay="0.2s" style="color: var(--text-secondary);">Algumas amostras dos meus trabalhos de design</p>
+                </div>
+
+                <div class="row gap-20">
+                    <!-- #01 STIHL Equilibrio -->
+                    <div class="c-xs-12 c-sm-6 c-md-4 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="insta-card">
+                            <iframe src="https://www.instagram.com/p/DVeVVO-CYMm/embed/" scrolling="no" loading="lazy"></iframe>
+                            <div class="insta-label">
+                                <span class="insta-label-text">STIHL / Equilibrio</span>
+                                <span class="insta-label-num">#01</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- #02 Ferretti - Dia da Mulher -->
+                    <div class="c-xs-12 c-sm-6 c-md-4 wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="insta-card">
+                            <iframe src="https://www.instagram.com/p/DVnmxM5D7WY/embed/" scrolling="no" loading="lazy"></iframe>
+                            <div class="insta-label">
+                                <span class="insta-label-text">Ferretti Frutas</span>
+                                <span class="insta-label-num">#02</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- #03 Solcia & Queiroz - Natal -->
+                    <div class="c-xs-12 c-sm-6 c-md-4 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="insta-card">
+                            <iframe src="https://www.instagram.com/p/DSpk3EhEn3q/embed/" scrolling="no" loading="lazy"></iframe>
+                            <div class="insta-label">
+                                <span class="insta-label-text">Solcia & Queiroz</span>
+                                <span class="insta-label-num">#03</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== DIVIDER ===== -->
+        <div class="glow-line"></div>
+
+        <!-- ===== CTA ===== -->
+        <section class="p-80-tb xs-p-40-tb">
+            <div class="container">
+                <div class="row f-justify-center">
+                    <div class="c-xs-12 c-md-8">
+                        <div class="cta-box text-center wow fadeInUp">
+                            <p class="section-label m-15-b">nota do designer</p>
+                            <h2 class="fs-13 xs-fs-11 fw-700 m-20-b lh-1-3">
+                                Essas artes são <span style="color: var(--accent);">simples</span>,<br>
+                                mas podem ser <span style="color: var(--accent-pink);">muito melhores</span><br>
+                                para <span style="color: var(--accent-green);">você</span>.
+                            </h2>
+                            <p class="fs-7 m-30-b" style="color: var(--text-secondary); max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+                                Logo, banner, post, identidade visual, o que precisar. Me chama que a gente cria junto.
+                            </p>
+                            <div class="d-flex f-justify-center f-gap-12 f-wrap">
+                                <a href="https://www.instagram.com/jonathan.rbo/" target="_blank" class="cta-btn cta-btn-primary">
+                                    <span class="iccon-instagram-1" style="font-size: 16px;"></span>
+                                    Instagram
+                                </a>
+                                <a href="https://github.com/JonathanRbo" target="_blank" class="cta-btn cta-btn-secondary">
+                                    <span class="iccon-github-1" style="font-size: 16px;"></span>
+                                    GitHub
+                                </a>
+                            </div>
+                            <p class="m-25-t" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted);">
+                                // aceito desafios criativos
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer p-12-tb">
+        <div class="container">
+            <div class="d-flex f-items-center f-justify-between">
+                <div class="d-flex f-items-center f-gap-10">
+                    <span class="status-dot"></span>
+                    <span>JR Design v1.0</span>
+                </div>
+                <div class="d-flex f-items-center f-gap-15">
+                    <span class="xs-d-none">RGB | 300dpi | 8bit</span>
+                    <a href="https://www.instagram.com/jonathan.rbo/" target="_blank" style="color: var(--accent); text-decoration: none;">
+                        <span class="iccon-instagram-1"></span> @jonathan.rbo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.squeleton.dev/squeleton-scripts.v4.min.js"></script>
+
+</body>
+</html>
