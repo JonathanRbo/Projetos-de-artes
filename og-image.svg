@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#131316"/>
+      <stop offset="100%" style="stop-color:#1b1b20"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6c9fff"/>
+      <stop offset="100%" style="stop-color:#f472b6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="4" fill="url(#accent)"/>
+  <rect x="0" y="626" width="1200" height="4" fill="url(#accent)"/>
+  <text x="600" y="200" text-anchor="middle" fill="#6c9fff" font-family="sans-serif" font-size="42" font-weight="800">JR Design</text>
+  <text x="600" y="300" text-anchor="middle" fill="#eaeaed" font-family="Arial, sans-serif" font-size="64" font-weight="800">Artes Digitais</text>
+  <text x="600" y="370" text-anchor="middle" fill="#9494a3" font-family="Arial, sans-serif" font-size="28">Portfólio de Design Gráfico | Jonathan Ribeiro</text>
+  <text x="600" y="430" text-anchor="middle" fill="#6c9fff" font-family="monospace" font-size="22">Photoshop | Illustrator | CorelDRAW | Figma</text>
+  <line x1="400" y1="470" x2="800" y2="470" stroke="#6c9fff" stroke-width="2" opacity="0.3"/>
+  <text x="600" y="510" text-anchor="middle" fill="#5e5e6e" font-family="monospace" font-size="18">/* portfolio_artes.psd */</text>
+</svg>
